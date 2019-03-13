@@ -1,0 +1,21 @@
+[Unit]
+Description=Introspection Installer
+Requires=network-online.target
+After=network-online.target
+After=dracut-initqueue.service
+Requires=coreos-installer.service
+Before=coreos-installer.service
+ConditionKernelCommandLine=coreos.inst=yes
+OnFailure=emergency.target
+OnFailureIsolate=yes
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/coreos-introspection
+StandardInput=tty
+TTYPath=/dev/tty2
+TTYReset=yes
+TTYVHangup=yes
+
+[Install]
+WantedBy=default.target

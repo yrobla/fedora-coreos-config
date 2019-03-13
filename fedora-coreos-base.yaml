@@ -27,7 +27,6 @@ repos:
   - fedora
   - fedora-updates
   - dustymabe-ignition
-  - dustymabe-coreos-installer
 
 ignore-removed-users:
   - root
@@ -161,14 +160,14 @@ postprocess:
     sed -i -e 's/CoreOS/CoreOS preview/' $(realpath /etc/os-release)
 
     # For now we are using kmsg [1] for multiplexing output to
-    # multiple console devices during early boot. We need to also tell 
+    # multiple console devices during early boot. We need to also tell
     # the kernel not to ratelimit kmsg during the initramfs.
-    # 
+    #
     # We do not want to use kmsg in the future as there may be sensitive
     # ignition data that leaks to non-root users (by reading the kernel
     # ring buffer using `dmesg`). In the future we will rely on kernel
     # console multiplexing [2] for this and will not use kmsg.
-    # 
+    #
     # [1] https://github.com/coreos/ignition-dracut/blob/26f2396b116286dcb46644dc157e4211aea3aba5/dracut/99journald-conf/00-journal-log-forwarding.conf#L2
     # [2] https://github.com/coreos/fedora-coreos-tracker/issues/136
     mkdir -p /usr/lib/dracut/modules.d/10coreos-sysctl
@@ -225,5 +224,23 @@ packages:
   - console-login-helper-messages-motdgen
   - console-login-helper-messages-issuegen
   - console-login-helper-messages-profile
-  # CoreOS Installer
-  - coreos-installer coreos-installer-dracut
+
+add-files:
+  - - coreos-installer/dracut/30coreos-installer/module-setup.sh
+    - /usr/lib/dracut/modules.d/30coreos-installer/module-setup.sh
+  - - coreos-installer/dracut/30coreos-installer/coreos-installer.service
+    - /usr/lib/dracut/modules.d/30coreos-installer/coreos-installer.service
+  - - coreos-installer/dracut/30coreos-installer/parse-coreos.sh
+    - /usr/lib/dracut/modules.d/30coreos-installer/parse-coreos.sh
+  - - coreos-installer/coreos-installer
+    - /usr/libexec/coreos-installer
+  - - coreos-installer/dracut/30coreos-introspection/module-setup.sh
+    - /usr/lib/dracut/modules.d/30coreos-introspection/module-setup.sh
+  - - coreos-installer/dracut/30coreos-introspection/coreos-introspection.service
+    - /usr/lib/dracut/modules.d/30coreos-introspection/coreos-introspection.service
+  - - coreos-installer/dracut/30coreos-introspection/parse-introspection.sh
+    - /usr/lib/dracut/modules.d/30coreos-introspection/parse-introspection.sh
+  - - coreos-installer/coreos-introspection
+    - /usr/libexec/coreos-introspection
+  - - coreos-installer/ghwc
+    - /usr/bin/ghwc
