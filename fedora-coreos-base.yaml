@@ -185,6 +185,8 @@ postprocess:
     EOF
 
 packages:
+  - dialog
+  - bc
   # SELinux
   - selinux-policy-targeted policycoreutils-python
   - setools-console
