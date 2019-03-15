@@ -312,7 +312,7 @@ write_ignition_file() {
     mount /dev/disk/by-label/boot /mnt/boot_partition
     trap 'umount /mnt/boot_partition' RETURN
 
-    if [ -f /tmp/inject_on_kernel ]
+    if [ -f /tmp/inject_on_kernel ]; then
         # If we need to inject ignition in url, manipulate kernel params
         sed -i "/^linux16/ s/$/ coreos.config.url=${IGNITION_URL//\//\\/}/" /mnt/boot_partition/grub2/grub.cfg
     else
