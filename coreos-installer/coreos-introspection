@@ -53,4 +53,3 @@ if [ -f /tmp/introspection_endpoint ]; then
     echo "Querying for ignition endpoint" >> /tmp/debug
     get_ignition_file
 fi
-exit 1
