@@ -185,8 +185,12 @@ postprocess:
     EOF
 
 packages:
+  # extra pacakges for coreos-introspection
+  - ethtool
+  # extra packages for coreos-installer
   - dialog
   - bc
+  - gpg
   # SELinux
   - selinux-policy-targeted policycoreutils-python
   - setools-console
